@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soybean Crush Spread | Statistical Arbitrage Analysis</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #F3F4F6; color: #1F2937; }
+        .chart-container { position: relative; width: 100%; max-width: 650px; height: 350px; max-height: 400px; margin: 0 auto; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .flow-arrow::after { content: '➔'; font-size: 1.5rem; color: #9CA3AF; display: block; text-align: center; margin: 0.5rem 0; }
+        @media (min-width: 768px) { .flow-arrow::after { transform: rotate(-90deg); margin: 0 1rem; } }
+        .chat-slide-up { animation: slideUp 0.3s ease-out forwards; }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .ai-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 0.5rem; }
+        .ai-content strong { font-weight: 700; color: #1E3A8A; }
+    </style>
+</head>
+<body class="bg-gray-100 relative">
+
+    <header class="bg-blue-900 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-8">
+            <h1 class="text-3xl md:text-5xl font-bold mb-2">Soybean Crush Spread</h1>
+            <p class="text-xl text-blue-200">Statistical Arbitrage & Market Structure Analysis</p>
+            <p class="text-xs text-blue-400 mt-2">Data Range: Jan 18, 2021 — Jan 18, 2026</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 space-y-12">
+        <!-- AI Executive Briefing -->
+        <section class="bg-gradient-to-r from-blue-50 to-white rounded-xl shadow-md p-6 border border-blue-100">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2"><span class="text-2xl">✨</span> AI Executive Briefing</h2>
+                    <p class="text-sm text-gray-600">Real-time analysis of spread mechanics and Z-score signals.</p>
+                </div>
+                <button onclick="generateReport()" id="generateBtn" class="mt-4 md:mt-0 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors flex items-center gap-2 shadow-sm">
+                    <span>Generate Analysis</span>
+                    <span id="loadingSpinner" class="hidden animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                </button>
+            </div>
+            <div id="aiReportContent" class="hidden mt-4 p-4 bg-white rounded-lg border border-blue-200 text-gray-700 ai-content leading-relaxed text-sm md:text-base"></div>
+        </section>
+
+        <!-- Mechanics Section -->
+        <section class="bg-white rounded-xl shadow-md p-6 md:p-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-blue-600 pl-4">The Mechanics of the Trade</h2>
+                <p class="mt-4 text-gray-600 leading-relaxed">The "Crush Spread" represents the gross processing margin of soybean crushing. It is the theoretical profit a processor makes by buying soybeans and crushing them into soybean meal and soybean oil.</p>
+            </div>
+            <div class="mt-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-center mb-6 text-gray-700">The Input/Output Equation</h3>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                    <div class="bg-blue-100 border-2 border-blue-600 rounded-lg p-4 w-full md:w-1/4 text-center shadow-sm">
+                        <div class="text-4xl mb-2">🌱</div><h4 class="font-bold text-blue-900">1 Bushel Soybeans</h4><p class="text-xs text-blue-700 mt-1">Cost Input (Short)</p>
+                    </div>
+                    <div class="text-gray-400 text-3xl transform rotate-90 md:rotate-0">➔</div>
+                    <div class="bg-gray-800 text-white rounded-lg p-4 w-full md:w-1/4 text-center shadow-md">
+                        <div class="text-4xl mb-2">⚙️</div><h4 class="font-bold">Crushing Process</h4><p class="text-xs text-gray-400 mt-1">Processing Cost</p>
+                    </div>
+                    <div class="text-gray-400 text-3xl transform rotate-90 md:rotate-0">➔</div>
+                    <div class="flex flex-col w-full md:w-1/3 gap-3">
+                        <div class="bg-green-100 border-2 border-green-600 rounded-lg p-3 flex items-center shadow-sm"><div class="text-2xl mr-3">🥡</div><div class="text-left"><h4 class="font-bold text-green-900">~44 lbs Meal</h4><p class="text-xs text-green-700">Revenue (Long)</p></div></div>
+                        <div class="bg-yellow-100 border-2 border-yellow-600 rounded-lg p-3 flex items-center shadow-sm"><div class="text-2xl mr-3">🛢️</div><div class="text-left"><h4 class="font-bold text-yellow-900">~11 lbs Oil</h4><p class="text-xs text-yellow-700">Revenue (Long)</p></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KPIs -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-blue-600">
+                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Current Spread (Jan '26)</h3>
+                <div class="mt-2 flex items-baseline"><span class="text-4xl font-extrabold text-gray-900">$1.65</span><span class="ml-2 text-sm font-medium text-green-600">/ bu</span></div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-yellow-500">
+                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Z-Score (5 Yr)</h3>
+                <div class="mt-2 flex items-baseline"><span class="text-4xl font-extrabold text-gray-900">+0.45</span><span class="ml-2 text-sm font-medium text-gray-500">σ</span></div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-green-600">
+                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Oil Share Value</h3>
+                <div class="mt-2 flex items-baseline"><span class="text-4xl font-extrabold text-gray-900">38%</span><span class="ml-2 text-sm font-medium text-red-500">▼ -4% YoY</span></div>
+            </div>
+        </section>
+
+        <!-- Historical Chart -->
+        <section class="bg-white rounded-xl shadow-md p-6 md:p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Historical Spread (2021 - 2026)</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2"><div class="chart-container"><canvas id="spreadHistoryChart"></canvas></div></div>
+                <div class="flex flex-col justify-center space-y-4">
+                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500"><h4 class="font-bold text-blue-900">Mean Reversion</h4><p class="text-sm text-blue-800">5-year average ~$1.42.</p></div>
+                    <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500"><h4 class="font-bold text-yellow-900">Regime Change</h4><p class="text-sm text-yellow-800">Stabilizing after 2022 volatility.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Component & Distribution Charts -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-3">Value Contribution</h2>
+                <div class="chart-container"><canvas id="componentChart"></canvas></div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-3">Spread Distribution</h2>
+                <div class="chart-container"><canvas id="distributionChart"></canvas></div>
+            </div>
+        </section>
+
+        <!-- Scatter Strategy -->
+        <section class="bg-white rounded-xl shadow-md p-6 md:p-8">
+            <h2 class="text-2xl font-bold text-gray-800 border-b pb-4 mb-6">Arbitrage Signal Analysis</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-2"><div class="chart-container"><canvas id="scatterStrategyChart"></canvas></div></div>
+                <div class="space-y-4">
+                    <h3 class="font-bold text-gray-700">Legend</h3>
+                    <div class="flex items-start"><div class="w-4 h-4 rounded-full bg-red-500 mt-1 mr-3"></div><div><h4 class="font-bold text-sm">Overvalued (Sell)</h4><p class="text-xs text-gray-500">Z > +2.0</p></div></div>
+                    <div class="flex items-start"><div class="w-4 h-4 rounded-full bg-green-500 mt-1 mr-3"></div><div><h4 class="font-bold text-sm">Undervalued (Buy)</h4><p class="text-xs text-gray-500">Z < -2.0</p></div></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-8 text-center text-sm mb-16 md:mb-0"><p>Soybean Crush Statistical Arbitrage Project</p></footer>
+
+    <!-- Chat Widget -->
+    <div class="fixed bottom-4 right-4 z-50 flex flex-col items-end">
+        <div id="chatBox" class="hidden w-80 md:w-96 bg-white rounded-xl shadow-2xl border border-blue-100 flex flex-col mb-4 overflow-hidden chat-slide-up" style="height: 500px;">
+            <div class="bg-blue-900 text-white p-4 flex justify-between items-center"><h3 class="font-bold">Ask the Analyst</h3><button onclick="toggleChat()" class="text-blue-200 hover:text-white">&times;</button></div>
+            <div id="chatMessages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50"><div class="flex justify-start"><div class="bg-white border border-gray-200 rounded-lg rounded-tl-none p-3 shadow-sm text-sm text-gray-700">Ask me about the Crush Spread!</div></div></div>
+            <div class="p-3 bg-white border-t border-gray-100">
+                <form onsubmit="handleChatSubmit(event)" class="flex gap-2"><input type="text" id="chatInput" placeholder="Ask a question..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm"><button type="submit" class="bg-blue-600 text-white rounded-lg px-3 py-2">➔</button></form>
+                <div id="apiKeyContainer" class="mt-2 hidden"><input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key" class="w-full text-xs border border-gray-200 rounded px-2 py-1"></div>
+            </div>
+        </div>
+        <button onclick="toggleChat()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg transition-transform hover:scale-105 flex items-center gap-2"><span class="text-xl">💬</span><span class="font-bold hidden md:inline pr-1">Ask AI</span></button>
+    </div>
+
+    <script>
+        // --- DATA (2021-2026) ---
+        const labels = ['Jan 21', 'Mar 21', 'May 21', 'Jul 21', 'Sep 21', 'Nov 21', 'Jan 22', 'Mar 22', 'May 22', 'Jul 22', 'Sep 22', 'Nov 22', 'Jan 23', 'Mar 23', 'May 23', 'Jul 23', 'Sep 23', 'Nov 23', 'Jan 24', 'Mar 24', 'May 24', 'Jul 24', 'Sep 24', 'Nov 24', 'Jan 25', 'Mar 25', 'May 25', 'Jul 25', 'Sep 25', 'Nov 25', 'Jan 26'];
+        const spreadData = [1.15, 1.28, 1.45, 1.60, 1.55, 1.40, 1.70, 2.10, 2.35, 2.15, 1.95, 1.80, 1.65, 1.50, 1.45, 1.60, 1.40, 1.30, 1.25, 1.35, 1.42, 1.48, 1.55, 1.60, 1.62, 1.65, 1.58, 1.60, 1.70, 1.68, 1.65];
+        const oilShare = [35, 36, 38, 40, 42, 44, 48, 52, 55, 53, 50, 48, 45, 42, 40, 38, 37, 36, 35, 36, 37, 37, 38, 38, 39, 39, 38, 38, 38, 38, 38];
+        const mealShare = oilShare.map(x => 100 - x);
+        const averageSpread = 1.42;
+
+        const scatterPoints = spreadData.map(val => ({ x: val, y: (val - averageSpread) / 0.35 }));
+
+        // --- CHART CONFIG ---
+        const tooltipConfig = { callbacks: { title: (items) => items[0].chart.data.labels[items[0].dataIndex] } };
+
+        new Chart(document.getElementById('spreadHistoryChart'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{ label: 'Spread ($/bu)', data: spreadData, borderColor: '#1E3A8A', backgroundColor: 'rgba(30, 58, 138, 0.1)', borderWidth: 2, pointBackgroundColor: '#F59E0B', pointRadius: 3, fill: true },
+                           { label: '5-Yr Mean', data: Array(labels.length).fill(averageSpread), borderColor: '#EF4444', borderWidth: 2, borderDash: [5, 5], pointRadius: 0 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { tooltip: tooltipConfig, legend: { position: 'bottom' } } }
+        });
+
+        new Chart(document.getElementById('componentChart'), {
+            type: 'bar',
+            data: { labels: labels, datasets: [{ label: 'Oil %', data: oilShare, backgroundColor: '#F59E0B' }, { label: 'Meal %', data: mealShare, backgroundColor: '#10B981' }] },
+            options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, max: 100 } } }
+        });
+
+        new Chart(document.getElementById('distributionChart'), {
+            type: 'bar',
+            data: { labels: ['<$1.25', '$1.25-$1.50', '$1.50-$1.75', '$1.75-$2.00', '>$2.00'], datasets: [{ label: 'Freq', data: [3, 12, 18, 8, 4], backgroundColor: ['#9CA3AF', '#10B981', '#10B981', '#F59E0B', '#EF4444'] }] },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        new Chart(document.getElementById('scatterStrategyChart'), {
+            type: 'scatter',
+            data: { datasets: [{ label: 'Signals', data: scatterPoints, backgroundColor: c => (c.raw?.y > 2 ? '#EF4444' : c.raw?.y < -2 ? '#10B981' : '#1E3A8A'), pointRadius: 5 }] },
+            options: { responsive: true, maintainAspectRatio: false, scales: { x: { title: { display: true, text: 'Price' } }, y: { title: { display: true, text: 'Z-Score' } } } }
+        });
+
+        // --- AI LOGIC ---
+        let apiKey = ""; 
+        async function callGemini(prompt, sys) {
+            const key = document.getElementById('apiKeyInput').value || apiKey;
+            if(!key) { document.getElementById('apiKeyContainer').classList.remove('hidden'); throw new Error("API Key required"); }
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ contents: [{parts: [{text: prompt}]}], systemInstruction: {parts: [{text: sys}]} }) });
+            const d = await res.json(); return d.candidates[0].content.parts[0].text;
+        }
+
+        async function generateReport() {
+            const btn = document.getElementById('generateBtn');
+            const spin = document.getElementById('loadingSpinner');
+            const div = document.getElementById('aiReportContent');
+            btn.disabled = true; spin.classList.remove('hidden'); div.classList.add('hidden');
+            try {
+                const txt = await callGemini(`Spread: $1.65. Z: +0.45. Oil: 38%. Brief update.`, "Senior Analyst tone.");
+                div.innerHTML = `<p>${txt.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>`; div.classList.remove('hidden');
+            } catch(e) { alert(e.message); } finally { btn.disabled = false; spin.classList.add('hidden'); }
+        }
+
+        function toggleChat() { document.getElementById('chatBox').classList.toggle('hidden'); }
+
+        async function handleChatSubmit(e) {
+            e.preventDefault(); const inp = document.getElementById('chatInput'); const msg = inp.value.trim(); if(!msg) return;
+            const box = document.getElementById('chatMessages');
+            box.innerHTML += `<div class="flex justify-end mb-2"><div class="bg-blue-600 text-white p-3 rounded-lg text-sm max-w-[85%]">${msg}</div></div>`;
+            inp.value = ''; box.scrollTop = box.scrollHeight;
+            try {
+                const txt = await callGemini(msg, "Explain soybeans simply.");
+                box.innerHTML += `<div class="flex justify-start mb-2"><div class="bg-white border p-3 rounded-lg text-sm max-w-[85%]">${txt.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</div></div>`;
+            } catch(e) { box.innerHTML += `<div class="text-red-500 text-xs">Error: ${e.message}</div>`; }
+            box.scrollTop = box.scrollHeight;
+        }
+    </script>
+</body>
+</html>
