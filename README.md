@@ -1,25 +1,23 @@
-# soybean-crush-dashboard
+# Soybean Crush Monitor: A Geopolitical Asset Dashboard
+
+**Live Dashboard:** [View Here](https://miguelariveracabezas.github.io/soybean-crush-dashboard/)
+
+## The Thesis: 2026 Outlook
+Soybeans are no longer just an agricultural commodity; they are a policy asset sitting at the intersection of:
+* **Food Inflation:** Meal pricing and livestock feed costs.
+* **Energy Policy:** Renewable diesel mandates (RFS volumes) and 45Z credits.
+* **Geopolitics:** US-China trade flows and state-level purchasing behavior.
+
+## What This Project Does
+This dashboard visualizes the structural regime shifts in the CBOT Crush Spread. Instead of simple price tracking, it monitors:
+1.  **Oil Share %:** The influence of energy policy on the complex.
+2.  **Flow Composition:** Distinguishing between State (political) and Private (commercial) buying from China.
+3.  **Regime Detection:** Rolling Z-Scores to flag volatility anomalies.
+
+## Tech Stack
+* **Frontend:** HTML5, Tailwind CSS
+* **Visualization:** Chart.js (Canvas rendering)
+* **Data Structure:** JavaScript-based simulation of Fred/USDA/CME data points.
+
 ---
-
-## 🐍 Python Backtesting Engine
-
-While the dashboard visualizes the data, I wrote a custom **vectorized backtester** in Python to validate the profitability of the mean-reversion strategy.
-
-**Key capabilities:**
-* **Statistical Validation:** Automated ADF (Augmented Dickey-Fuller) tests for stationarity and Hurst Exponent calculation.
-* **Vectorized Logic:** Replaced iterative loops with `pandas` vectorization for zero-latency signal generation.
-* **Realistic Friction:** Accounts for **$0.02/bu transaction costs** (slippage + commissions) per trade.
-
-### 📈 Backtest Results (2021-2024)
-* **Sharpe Ratio:** 2.85
-* **Total Return:** $14,250 (on 1 lot basis)
-* **Max Drawdown:** -12.4%
-
-![Backtest Equity Curve](backtest_results.png)
-
-### 💻 Code Snippet (Vectorized Signal Logic)
-```python
-# Zero-loop signal generation
-data.loc[data['z_score'] > 2.0, 'signal'] = -1  # Short Entry
-data.loc[data['z_score'] < -2.0, 'signal'] = 1  # Long Entry
-data['position'] = data['signal'].ffill().fillna(0) # State management
+*Created by Miguel Rivera Cabezas*
