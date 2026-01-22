@@ -3,218 +3,628 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soybean Crush Spread | Statistical Arbitrage Analysis</title>
-    <!-- Tailwind CSS -->
+    <title>Soybean Crush: Geopolitical Asset Monitor</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        warm: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            200: '#e7e5e4',
+                            300: '#d6d3d1',
+                            800: '#44403c',
+                            900: '#292524',
+                        },
+                        sage: {
+                            500: '#8da399',
+                            600: '#758b81',
+                        },
+                        terra: {
+                            500: '#b8867b',
+                            600: '#9e6d63',
+                        },
+                        sand: {
+                            500: '#d4b483',
+                            600: '#c1a171',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Helvetica Neue', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #F3F4F6; color: #1F2937; }
-        .chart-container { position: relative; width: 100%; max-width: 650px; height: 350px; max-height: 400px; margin: 0 auto; }
-        @media (min-width: 768px) { .chart-container { height: 400px; } }
-        .flow-arrow::after { content: '➔'; font-size: 1.5rem; color: #9CA3AF; display: block; text-align: center; margin: 0.5rem 0; }
-        @media (min-width: 768px) { .flow-arrow::after { transform: rotate(-90deg); margin: 0 1rem; } }
-        .chat-slide-up { animation: slideUp 0.3s ease-out forwards; }
-        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .ai-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 0.5rem; }
-        .ai-content strong { font-weight: 700; color: #1E3A8A; }
+        body {
+            background-color: #f5f5f4; /* warm-100 */
+            color: #292524; /* warm-900 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px; /* Max width for larger screens */
+            height: 350px;
+            margin: 0 auto;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        /* Custom scrollbar for data tables or content */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e7e5e4;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a8a29e;
+            border-radius: 3px;
+        }
+        .nav-active {
+            border-bottom: 2px solid #b8867b;
+            color: #292524;
+            font-weight: 600;
+        }
+        .card-hover {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
     </style>
 </head>
-<body class="bg-gray-100 relative">
+<body class="font-sans antialiased">
 
-    <header class="bg-blue-900 text-white shadow-lg">
-        <div class="container mx-auto px-6 py-8">
-            <h1 class="text-3xl md:text-5xl font-bold mb-2">Soybean Crush Spread</h1>
-            <p class="text-xl text-blue-200">Statistical Arbitrage & Market Structure Analysis</p>
-            <p class="text-xs text-blue-400 mt-2">Data Range: Jan 18, 2021 — Jan 18, 2026</p>
+    <!-- Application Structure Plan -->
+    <!-- 
+    Chosen Palette: Warm Neutrals & Harmony (Sage, Terracotta, Sand)
+    
+    Application Structure Plan:
+    1. Header/Hero: Establishes the core thesis ("Soybeans as Policy Asset") immediately.
+    2. The "Nexus" Dashboard (Interactive Grid):
+       - A central interactive hub breaking down the three pillars: Food, Fuel, Geopolitics.
+       - User clicks pillars to reveal specific "2026 Context" text details, promoting active exploration.
+    3. Quantitative Monitor Section (The "Crush" Dashboard):
+       - This is the core "App" functionality mimicking the user's project.
+       - Chart 1: The Crush Spread & Oil Share (Key metric: Energy Policy impact).
+       - Chart 2: China Flows (Key metric: State vs Private buying).
+       - Chart 3: Regime Detection (Key metric: Z-Scores/Volatility).
+    4. Synthesis/Briefing:
+       - A structured text section summarizing the "2026 Thesis" (Policy Risk, Trade Opacity).
+    
+    Why this structure?
+    It moves from high-level concept -> specific interactive data exploration -> synthesized conclusions. 
+    It mimics a professional financial terminal or research dashboard, fitting the user's "Quant/Analyst" persona.
+    -->
+
+    <!-- Visualization & Content Choices -->
+    <!--
+    1. Crush Spread & Oil Share: 
+       - Goal: Change/Relationship. 
+       - Viz: Line Chart (Dual Axis). 
+       - Interaction: Toggle between Price and Share %.
+       - Justification: Shows how policy (Oil Share) drives the overall complex value. Chart.js Canvas.
+    
+    2. China Flows (State vs Private):
+       - Goal: Compare/Composition.
+       - Viz: Stacked Bar Chart.
+       - Interaction: Filter timeframes.
+       - Justification: Visually demonstrates the "opacity" of state buying vs private market behavior. Chart.js Canvas.
+    
+    3. Volatility Regimes (Z-Score):
+       - Goal: Relationships/Anomaly Detection.
+       - Viz: Scatter/Line Combo.
+       - Interaction: Hover for "Regime" tags.
+       - Justification: Highlights the "structural shifts" mentioned in the report. Chart.js Canvas.
+    
+    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-warm-100/90 backdrop-blur-md border-b border-warm-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl font-bold tracking-tight text-warm-900">Crush<span class="text-terra-600">Monitor</span></span>
+                    <span class="hidden sm:block text-xs uppercase tracking-widest text-warm-800 bg-warm-200 px-2 py-1 rounded">2026 Outlook</span>
+                </div>
+                <div class="flex space-x-6 text-sm">
+                    <button onclick="scrollToSection('thesis')" class="text-warm-800 hover:text-terra-600 transition-colors">Thesis</button>
+                    <button onclick="scrollToSection('monitor')" class="text-warm-800 hover:text-terra-600 transition-colors">Live Monitor</button>
+                    <button onclick="scrollToSection('brief')" class="text-warm-800 hover:text-terra-600 transition-colors">Briefing</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="thesis" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 text-center">
+        <h1 class="text-4xl sm:text-5xl font-light text-warm-900 mb-6 leading-tight">
+            Soybeans are not just a crop.<br>
+            <span class="font-bold text-terra-600">They are a geopolitical asset class.</span>
+        </h1>
+        <p class="max-w-2xl mx-auto text-lg text-warm-800 mb-10 leading-relaxed">
+            We are tracking the intersection of <strong>Food Inflation</strong>, <strong>Energy Policy</strong>, and <strong>Trade Wars</strong>. 
+            The volatility heading into 2026 isn't random—it's structural.
+        </p>
+        
+        <!-- The Three Pillars Interaction -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <!-- Card 1: Food -->
+            <div onclick="updateInsight('food')" class="cursor-pointer bg-white p-6 rounded-xl border border-warm-200 card-hover group text-left">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="text-2xl">📉</span>
+                    <span class="text-xs font-bold text-warm-300 group-hover:text-terra-500 transition-colors">CLICK TO EXPLORE</span>
+                </div>
+                <h3 class="text-xl font-bold text-warm-900 mb-2">Food Inflation</h3>
+                <p class="text-sm text-warm-800">Meal pricing flows directly into global protein costs (meat, dairy, eggs).</p>
+            </div>
+
+            <!-- Card 2: Fuel -->
+            <div onclick="updateInsight('fuel')" class="cursor-pointer bg-white p-6 rounded-xl border border-warm-200 card-hover group text-left ring-2 ring-sage-500 ring-opacity-50">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="text-2xl">⚡</span>
+                    <span class="text-xs font-bold text-warm-300 group-hover:text-sage-500 transition-colors">CLICK TO EXPLORE</span>
+                </div>
+                <h3 class="text-xl font-bold text-warm-900 mb-2">Energy Policy</h3>
+                <p class="text-sm text-warm-800">Oil value is now driven by EPA mandates, RFS volumes, and 45Z credits.</p>
+            </div>
+
+            <!-- Card 3: Geopolitics -->
+            <div onclick="updateInsight('geo')" class="cursor-pointer bg-white p-6 rounded-xl border border-warm-200 card-hover group text-left">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="text-2xl">🇨🇳</span>
+                    <span class="text-xs font-bold text-warm-300 group-hover:text-terra-500 transition-colors">CLICK TO EXPLORE</span>
+                </div>
+                <h3 class="text-xl font-bold text-warm-900 mb-2">Geopolitics</h3>
+                <p class="text-sm text-warm-800">Soy flows are the first lever pulled in US–China trade negotiations.</p>
+            </div>
+        </div>
+
+        <!-- Dynamic Insight Block -->
+        <div id="insight-display" class="mt-8 bg-warm-200/50 rounded-lg p-6 max-w-3xl mx-auto text-left border-l-4 border-sage-500 transition-all duration-300">
+            <h4 id="insight-title" class="font-bold text-warm-900 mb-2">Focus: Energy Policy & The Crush</h4>
+            <p id="insight-text" class="text-warm-800 text-sm leading-relaxed">
+                <strong>Current Context:</strong> 2026 soybean oil pricing is being held back by uncertainty around policy details. The market is waiting on final RFS rules and 45Z guidance. When policy moves, the "Oil Share" of the crush margin reacts instantly, often repricing the entire complex before fundamentals catch up.
+            </p>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8 space-y-12">
-        <!-- AI Executive Briefing -->
-        <section class="bg-gradient-to-r from-blue-50 to-white rounded-xl shadow-md p-6 border border-blue-100">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                <div>
-                    <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2"><span class="text-2xl">✨</span> AI Executive Briefing</h2>
-                    <p class="text-sm text-gray-600">Real-time analysis of spread mechanics and Z-score signals.</p>
-                </div>
-                <button onclick="generateReport()" id="generateBtn" class="mt-4 md:mt-0 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors flex items-center gap-2 shadow-sm">
-                    <span>Generate Analysis</span>
-                    <span id="loadingSpinner" class="hidden animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
-                </button>
-            </div>
-            <div id="aiReportContent" class="hidden mt-4 p-4 bg-white rounded-lg border border-blue-200 text-gray-700 ai-content leading-relaxed text-sm md:text-base"></div>
-        </section>
+    <!-- Main Dashboard Section -->
+    <main id="monitor" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+        
+        <!-- Dashboard Intro -->
+        <div class="text-left border-b border-warm-300 pb-4">
+            <h2 class="text-3xl font-light text-warm-900">The Crush Monitor</h2>
+            <p class="text-warm-800 mt-2 max-w-3xl">
+                This dashboard visualizes the structural regime shifts in the market. We look beyond price to track <strong>Oil Share</strong>, <strong>State-Level Flows</strong>, and <strong>Volatility Z-Scores</strong>.
+            </p>
+        </div>
 
-        <!-- Mechanics Section -->
-        <section class="bg-white rounded-xl shadow-md p-6 md:p-8">
-            <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-blue-600 pl-4">The Mechanics of the Trade</h2>
-                <p class="mt-4 text-gray-600 leading-relaxed">The "Crush Spread" represents the gross processing margin of soybean crushing. It is the theoretical profit a processor makes by buying soybeans and crushing them into soybean meal and soybean oil.</p>
-            </div>
-            <div class="mt-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
-                <h3 class="text-lg font-semibold text-center mb-6 text-gray-700">The Input/Output Equation</h3>
-                <div class="flex flex-col md:flex-row items-center justify-center gap-4">
-                    <div class="bg-blue-100 border-2 border-blue-600 rounded-lg p-4 w-full md:w-1/4 text-center shadow-sm">
-                        <div class="text-4xl mb-2">🌱</div><h4 class="font-bold text-blue-900">1 Bushel Soybeans</h4><p class="text-xs text-blue-700 mt-1">Cost Input (Short)</p>
-                    </div>
-                    <div class="text-gray-400 text-3xl transform rotate-90 md:rotate-0">➔</div>
-                    <div class="bg-gray-800 text-white rounded-lg p-4 w-full md:w-1/4 text-center shadow-md">
-                        <div class="text-4xl mb-2">⚙️</div><h4 class="font-bold">Crushing Process</h4><p class="text-xs text-gray-400 mt-1">Processing Cost</p>
-                    </div>
-                    <div class="text-gray-400 text-3xl transform rotate-90 md:rotate-0">➔</div>
-                    <div class="flex flex-col w-full md:w-1/3 gap-3">
-                        <div class="bg-green-100 border-2 border-green-600 rounded-lg p-3 flex items-center shadow-sm"><div class="text-2xl mr-3">🥡</div><div class="text-left"><h4 class="font-bold text-green-900">~44 lbs Meal</h4><p class="text-xs text-green-700">Revenue (Long)</p></div></div>
-                        <div class="bg-yellow-100 border-2 border-yellow-600 rounded-lg p-3 flex items-center shadow-sm"><div class="text-2xl mr-3">🛢️</div><div class="text-left"><h4 class="font-bold text-yellow-900">~11 lbs Oil</h4><p class="text-xs text-yellow-700">Revenue (Long)</p></div></div>
+        <!-- Chart Row 1: The Crush & Oil Share -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-warm-200">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-warm-900">Crush Margin & Oil Share</h3>
+                    <div class="flex space-x-2">
+                        <button onclick="toggleCrushView('price')" id="btn-price" class="px-3 py-1 text-xs font-semibold rounded bg-sage-500 text-white">Price ($)</button>
+                        <button onclick="toggleCrushView('share')" id="btn-share" class="px-3 py-1 text-xs font-semibold rounded bg-warm-100 text-warm-600 hover:bg-warm-200">Oil Share (%)</button>
                     </div>
                 </div>
+                <!-- Chart Container -->
+                <div class="chart-container">
+                    <canvas id="crushChart"></canvas>
+                </div>
             </div>
-        </section>
 
-        <!-- KPIs -->
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-blue-600">
-                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Current Spread (Jan '26)</h3>
-                <div class="mt-2 flex items-baseline"><span class="text-4xl font-extrabold text-gray-900">$1.65</span><span class="ml-2 text-sm font-medium text-green-600">/ bu</span></div>
-            </div>
-            <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-yellow-500">
-                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Z-Score (5 Yr)</h3>
-                <div class="mt-2 flex items-baseline"><span class="text-4xl font-extrabold text-gray-900">+0.45</span><span class="ml-2 text-sm font-medium text-gray-500">σ</span></div>
-            </div>
-            <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-green-600">
-                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Oil Share Value</h3>
-                <div class="mt-2 flex items-baseline"><span class="text-4xl font-extrabold text-gray-900">38%</span><span class="ml-2 text-sm font-medium text-red-500">▼ -4% YoY</span></div>
-            </div>
-        </section>
-
-        <!-- Historical Chart -->
-        <section class="bg-white rounded-xl shadow-md p-6 md:p-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Historical Spread (2021 - 2026)</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2"><div class="chart-container"><canvas id="spreadHistoryChart"></canvas></div></div>
-                <div class="flex flex-col justify-center space-y-4">
-                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500"><h4 class="font-bold text-blue-900">Mean Reversion</h4><p class="text-sm text-blue-800">5-year average ~$1.42.</p></div>
-                    <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500"><h4 class="font-bold text-yellow-900">Regime Change</h4><p class="text-sm text-yellow-800">Stabilizing after 2022 volatility.</p></div>
+            <!-- Context Panel 1 -->
+            <div class="bg-warm-50 p-6 rounded-xl border border-warm-200 flex flex-col justify-center space-y-4">
+                <div class="border-l-4 border-sage-500 pl-4">
+                    <h4 class="font-bold text-warm-900">The "Fuel" Factor</h4>
+                    <p class="text-sm text-warm-800 mt-1">Historically, oil was a byproduct. Today, renewable diesel demand drives the bus.</p>
+                </div>
+                <div class="bg-white p-4 rounded shadow-sm">
+                    <span class="block text-xs font-bold text-warm-500 uppercase">Current Regime</span>
+                    <span class="block text-2xl font-bold text-sage-600">Policy-Driven</span>
+                    <p class="text-xs text-warm-600 mt-2">Correlations are higher to RFS Credit prices (RINs) than to global veg-oil stocks.</p>
+                </div>
+                <div class="bg-white p-4 rounded shadow-sm">
+                    <span class="block text-xs font-bold text-warm-500 uppercase">2026 Risk</span>
+                    <span class="block text-2xl font-bold text-terra-600">High Volatility</span>
+                    <p class="text-xs text-warm-600 mt-2">Pending EPA final rules for 2026-2027 volumes create massive headline risk.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Component & Distribution Charts -->
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-3">Value Contribution</h2>
-                <div class="chart-container"><canvas id="componentChart"></canvas></div>
+        <!-- Chart Row 2: China Flows -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Context Panel 2 -->
+            <div class="order-2 lg:order-1 bg-warm-50 p-6 rounded-xl border border-warm-200 flex flex-col justify-center space-y-4">
+                <div class="border-l-4 border-terra-500 pl-4">
+                    <h4 class="font-bold text-warm-900">The "China" Disconnect</h4>
+                    <p class="text-sm text-warm-800 mt-1">Total volume is misleading. The <strong>composition</strong> of the buyer matters.</p>
+                </div>
+                <ul class="space-y-3 mt-2">
+                    <li class="flex items-start">
+                        <span class="text-terra-500 mr-2">●</span>
+                        <div class="text-sm text-warm-800">
+                            <strong>State Firms:</strong> Buy to meet political targets (12M ton pledge). Price insensitive.
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-sand-600 mr-2">●</span>
+                        <div class="text-sm text-warm-800">
+                            <strong>Private Crushers:</strong> Buy for profit. They prefer cheaper Brazilian beans.
+                        </div>
+                    </li>
+                </ul>
+                <div class="mt-4 p-3 bg-terra-50 rounded border border-terra-100">
+                    <p class="text-xs text-terra-800 italic">"Headline risk is real: State buying can turn on and off based on diplomatic moods."</p>
+                </div>
             </div>
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-3">Spread Distribution</h2>
-                <div class="chart-container"><canvas id="distributionChart"></canvas></div>
-            </div>
-        </section>
 
-        <!-- Scatter Strategy -->
-        <section class="bg-white rounded-xl shadow-md p-6 md:p-8">
-            <h2 class="text-2xl font-bold text-gray-800 border-b pb-4 mb-6">Arbitrage Signal Analysis</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="md:col-span-2"><div class="chart-container"><canvas id="scatterStrategyChart"></canvas></div></div>
-                <div class="space-y-4">
-                    <h3 class="font-bold text-gray-700">Legend</h3>
-                    <div class="flex items-start"><div class="w-4 h-4 rounded-full bg-red-500 mt-1 mr-3"></div><div><h4 class="font-bold text-sm">Overvalued (Sell)</h4><p class="text-xs text-gray-500">Z > +2.0</p></div></div>
-                    <div class="flex items-start"><div class="w-4 h-4 rounded-full bg-green-500 mt-1 mr-3"></div><div><h4 class="font-bold text-sm">Undervalued (Buy)</h4><p class="text-xs text-gray-500">Z < -2.0</p></div></div>
+            <div class="order-1 lg:order-2 lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-warm-200">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-warm-900">China Import Volume: State vs. Private</h3>
+                    <select id="flowFilter" class="bg-warm-50 border border-warm-300 text-xs rounded px-2 py-1 text-warm-900 focus:outline-none">
+                        <option value="all">View All Origins</option>
+                        <option value="us">US Origin Only</option>
+                    </select>
+                </div>
+                <!-- Chart Container -->
+                <div class="chart-container">
+                    <canvas id="flowChart"></canvas>
                 </div>
             </div>
         </section>
+
+        <!-- Chart Row 3: Regime Detection (Z-Scores) -->
+        <section class="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-warm-200">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-1 space-y-4">
+                    <h3 class="text-lg font-bold text-warm-900">Regime Detection</h3>
+                    <p class="text-sm text-warm-800">
+                        We compute rolling Z-scores to identify when the market detaches from fundamentals.
+                    </p>
+                    <div class="p-4 bg-warm-50 rounded border border-warm-200">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                            <span class="text-xs font-bold">Extreme Anomaly (>2σ)</span>
+                        </div>
+                        <p class="text-xs text-warm-600">Often triggered by policy announcements (e.g., RFS volume release).</p>
+                    </div>
+                </div>
+                <div class="md:col-span-3">
+                     <div class="chart-container" style="height: 300px;">
+                        <canvas id="regimeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <footer class="bg-gray-800 text-gray-400 py-8 text-center text-sm mb-16 md:mb-0"><p>Soybean Crush Statistical Arbitrage Project</p></footer>
-
-    <!-- Chat Widget -->
-    <div class="fixed bottom-4 right-4 z-50 flex flex-col items-end">
-        <div id="chatBox" class="hidden w-80 md:w-96 bg-white rounded-xl shadow-2xl border border-blue-100 flex flex-col mb-4 overflow-hidden chat-slide-up" style="height: 500px;">
-            <div class="bg-blue-900 text-white p-4 flex justify-between items-center"><h3 class="font-bold">Ask the Analyst</h3><button onclick="toggleChat()" class="text-blue-200 hover:text-white">&times;</button></div>
-            <div id="chatMessages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50"><div class="flex justify-start"><div class="bg-white border border-gray-200 rounded-lg rounded-tl-none p-3 shadow-sm text-sm text-gray-700">Ask me about the Crush Spread!</div></div></div>
-            <div class="p-3 bg-white border-t border-gray-100">
-                <form onsubmit="handleChatSubmit(event)" class="flex gap-2"><input type="text" id="chatInput" placeholder="Ask a question..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm"><button type="submit" class="bg-blue-600 text-white rounded-lg px-3 py-2">➔</button></form>
-                <div id="apiKeyContainer" class="mt-2 hidden"><input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key" class="w-full text-xs border border-gray-200 rounded px-2 py-1"></div>
+    <!-- Executive Briefing Section -->
+    <section id="brief" class="bg-warm-900 text-warm-100 py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <span class="text-terra-400 font-bold tracking-widest text-xs uppercase">Summary</span>
+                <h2 class="text-3xl font-light mt-2">The 2026 Executive Brief</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-warm-800 p-6 rounded-lg border border-warm-700">
+                    <h3 class="text-xl font-bold text-white mb-3">1. Policy Risk is The Driver</h3>
+                    <p class="text-warm-300 text-sm leading-relaxed">
+                        With the RIN bank drawing down, the 2026-2027 RFS volumes are the single biggest variable for the complex. Bio-diesel incentives can reprice soybean oil overnight, dragging the crush margin with it.
+                    </p>
+                </div>
+                <div class="bg-warm-800 p-6 rounded-lg border border-warm-700">
+                    <h3 class="text-xl font-bold text-white mb-3">2. Beware the "Trade Truce"</h3>
+                    <p class="text-warm-300 text-sm leading-relaxed">
+                        China met its purchase pledge, but the data shows it was driven by State firms, not organic demand. This is "fragile volume." If trade tensions rise, State buyers exit immediately, leaving a vacuum.
+                    </p>
+                </div>
+                <div class="bg-warm-800 p-6 rounded-lg border border-warm-700">
+                    <h3 class="text-xl font-bold text-white mb-3">3. Source Switching</h3>
+                    <p class="text-warm-300 text-sm leading-relaxed">
+                        Private crushers in China still prefer South American beans due to price. The US is becoming a "residual supplier" or a "political supplier," rather than the primary commercial source.
+                    </p>
+                </div>
+                <div class="bg-warm-800 p-6 rounded-lg border border-warm-700">
+                    <h3 class="text-xl font-bold text-white mb-3">4. The Algo Approach</h3>
+                    <p class="text-warm-300 text-sm leading-relaxed">
+                        Traditional fundamental analysis is failing to catch these shifts. A quantitative approach tracking <strong>Flow Distributions</strong> and <strong>Z-Score Regimes</strong> provides the only clean signal in a policy-heavy market.
+                    </p>
+                </div>
             </div>
         </div>
-        <button onclick="toggleChat()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg transition-transform hover:scale-105 flex items-center gap-2"><span class="text-xl">💬</span><span class="font-bold hidden md:inline pr-1">Ask AI</span></button>
-    </div>
+    </section>
+
+    <footer class="bg-warm-950 text-warm-400 py-8 text-center text-xs">
+        <p>&copy; 2026 Soybean Crush Monitor Dashboard. Concept based on source report.</p>
+        <p class="mt-2">Data simulated for demonstration purposes.</p>
+    </footer>
 
     <script>
-        // --- DATA (2021-2026) ---
-        const labels = ['Jan 21', 'Mar 21', 'May 21', 'Jul 21', 'Sep 21', 'Nov 21', 'Jan 22', 'Mar 22', 'May 22', 'Jul 22', 'Sep 22', 'Nov 22', 'Jan 23', 'Mar 23', 'May 23', 'Jul 23', 'Sep 23', 'Nov 23', 'Jan 24', 'Mar 24', 'May 24', 'Jul 24', 'Sep 24', 'Nov 24', 'Jan 25', 'Mar 25', 'May 25', 'Jul 25', 'Sep 25', 'Nov 25', 'Jan 26'];
-        const spreadData = [1.15, 1.28, 1.45, 1.60, 1.55, 1.40, 1.70, 2.10, 2.35, 2.15, 1.95, 1.80, 1.65, 1.50, 1.45, 1.60, 1.40, 1.30, 1.25, 1.35, 1.42, 1.48, 1.55, 1.60, 1.62, 1.65, 1.58, 1.60, 1.70, 1.68, 1.65];
-        const oilShare = [35, 36, 38, 40, 42, 44, 48, 52, 55, 53, 50, 48, 45, 42, 40, 38, 37, 36, 35, 36, 37, 37, 38, 38, 39, 39, 38, 38, 38, 38, 38];
-        const mealShare = oilShare.map(x => 100 - x);
-        const averageSpread = 1.42;
+        // --- State Management ---
+        const state = {
+            currentInsight: 'fuel',
+            crushView: 'price' // or 'share'
+        };
 
-        const scatterPoints = spreadData.map(val => ({ x: val, y: (val - averageSpread) / 0.35 }));
+        // --- Data Mockups (Simulating the Report's Narrative) ---
+        
+        // 1. Crush Data: Shows volatility increasing in 2025/2026
+        const labelsMonthly = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
+        // Mocking a year of data where price is volatile but Oil Share is rising
+        const crushData = {
+            margin: [1.8, 1.9, 2.1, 1.7, 1.6, 2.2, 2.4, 2.1, 1.9, 2.3, 2.5, 2.6], // Rising volatility
+            oilShare: [32, 33, 34, 33, 35, 38, 40, 41, 39, 42, 44, 45], // Rising due to fuel demand
+            oilSharePrice: [45, 46, 48, 47, 50, 55, 60, 58, 56, 62, 65, 68] // Corresponding synth price
+        };
 
-        // --- CHART CONFIG ---
-        const tooltipConfig = { callbacks: { title: (items) => items[0].chart.data.labels[items[0].dataIndex] } };
+        // 2. Flows Data: State vs Private
+        const flowData = {
+            state: [1.2, 0.8, 2.5, 3.0, 1.5, 0.5, 0.2, 0.5, 2.0, 3.5, 4.0, 1.0], // "Lumpy" political buying
+            private: [4.0, 4.2, 4.0, 3.8, 2.0, 1.5, 1.0, 1.2, 1.5, 2.0, 2.2, 2.5] // Commercial demand
+        };
 
-        new Chart(document.getElementById('spreadHistoryChart'), {
+        // 3. Regime Data (Z-Scores)
+        const regimeData = [0.2, 0.5, -0.1, 1.5, 2.2, 2.5, 1.8, 0.4, -0.5, 1.2, 2.8, 3.1]; // >2.0 indicates regime shift
+
+        // --- Chart Configurations ---
+
+        // Chart 1: Crush Margin
+        const ctxCrush = document.getElementById('crushChart').getContext('2d');
+        const chartCrush = new Chart(ctxCrush, {
             type: 'line',
             data: {
-                labels: labels,
-                datasets: [{ label: 'Spread ($/bu)', data: spreadData, borderColor: '#1E3A8A', backgroundColor: 'rgba(30, 58, 138, 0.1)', borderWidth: 2, pointBackgroundColor: '#F59E0B', pointRadius: 3, fill: true },
-                           { label: '5-Yr Mean', data: Array(labels.length).fill(averageSpread), borderColor: '#EF4444', borderWidth: 2, borderDash: [5, 5], pointRadius: 0 }]
+                labels: labelsMonthly,
+                datasets: [{
+                    label: 'Crush Margin ($/bu)',
+                    data: crushData.margin,
+                    borderColor: '#44403c', // warm-800
+                    backgroundColor: 'rgba(68, 64, 60, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    yAxisID: 'y'
+                }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { tooltip: tooltipConfig, legend: { position: 'bottom' } } }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: { position: 'top', labels: { usePointStyle: true, color: '#44403c' } },
+                    tooltip: {
+                        backgroundColor: '#fafaf9',
+                        titleColor: '#292524',
+                        bodyColor: '#44403c',
+                        borderColor: '#d6d3d1',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: { display: true, text: 'Margin ($/bu)' },
+                        grid: { color: '#e7e5e4' }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: false, // Hidden initially
+                        position: 'right',
+                        grid: { drawOnChartArea: false }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
         });
 
-        new Chart(document.getElementById('componentChart'), {
+        // Chart 2: China Flows
+        const ctxFlow = document.getElementById('flowChart').getContext('2d');
+        const chartFlow = new Chart(ctxFlow, {
             type: 'bar',
-            data: { labels: labels, datasets: [{ label: 'Oil %', data: oilShare, backgroundColor: '#F59E0B' }, { label: 'Meal %', data: mealShare, backgroundColor: '#10B981' }] },
-            options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, max: 100 } } }
+            data: {
+                labels: labelsMonthly,
+                datasets: [
+                    {
+                        label: 'State Firms (Political)',
+                        data: flowData.state,
+                        backgroundColor: '#b8867b', // Terra (Political)
+                        stack: 'Stack 0',
+                    },
+                    {
+                        label: 'Private Crushers (Commercial)',
+                        data: flowData.private,
+                        backgroundColor: '#d4b483', // Sand (Commercial)
+                        stack: 'Stack 0',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { usePointStyle: true, color: '#44403c' } },
+                    tooltip: {
+                         callbacks: {
+                            footer: (tooltipItems) => {
+                                let total = 0;
+                                tooltipItems.forEach(function(tooltipItem) {
+                                    total += tooltipItem.parsed.y;
+                                });
+                                return 'Total Vol: ' + total + 'M tons';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { stacked: true, grid: { display: false } },
+                    y: { stacked: true, title: { display: true, text: 'Volume (Million Tons)' } }
+                }
+            }
         });
 
-        new Chart(document.getElementById('distributionChart'), {
-            type: 'bar',
-            data: { labels: ['<$1.25', '$1.25-$1.50', '$1.50-$1.75', '$1.75-$2.00', '>$2.00'], datasets: [{ label: 'Freq', data: [3, 12, 18, 8, 4], backgroundColor: ['#9CA3AF', '#10B981', '#10B981', '#F59E0B', '#EF4444'] }] },
-            options: { responsive: true, maintainAspectRatio: false }
+        // Chart 3: Regime Detection
+        const ctxRegime = document.getElementById('regimeChart').getContext('2d');
+        const chartRegime = new Chart(ctxRegime, {
+            type: 'bar', // Using bar to show deviation clearly
+            data: {
+                labels: labelsMonthly,
+                datasets: [{
+                    label: 'Rolling Z-Score (Volatility)',
+                    data: regimeData,
+                    backgroundColor: (context) => {
+                        const value = context.raw;
+                        return value > 2.0 ? '#ef4444' : (value < -2.0 ? '#ef4444' : '#8da399'); // Red for anomaly, Sage for normal
+                    },
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                yMin: 2,
+                                yMax: 2,
+                                borderColor: 'rgba(239, 68, 68, 0.5)',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                label: { content: 'Regime Shift Threshold', enabled: true }
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { 
+                        title: { display: true, text: 'Std Dev (σ)' },
+                        suggestedMax: 3.5,
+                        grid: { color: '#e7e5e4' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
         });
 
-        new Chart(document.getElementById('scatterStrategyChart'), {
-            type: 'scatter',
-            data: { datasets: [{ label: 'Signals', data: scatterPoints, backgroundColor: c => (c.raw?.y > 2 ? '#EF4444' : c.raw?.y < -2 ? '#10B981' : '#1E3A8A'), pointRadius: 5 }] },
-            options: { responsive: true, maintainAspectRatio: false, scales: { x: { title: { display: true, text: 'Price' } }, y: { title: { display: true, text: 'Z-Score' } } } }
-        });
 
-        // --- AI LOGIC ---
-        let apiKey = ""; 
-        async function callGemini(prompt, sys) {
-            const key = document.getElementById('apiKeyInput').value || apiKey;
-            if(!key) { document.getElementById('apiKeyContainer').classList.remove('hidden'); throw new Error("API Key required"); }
-            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ contents: [{parts: [{text: prompt}]}], systemInstruction: {parts: [{text: sys}]} }) });
-            const d = await res.json(); return d.candidates[0].content.parts[0].text;
+        // --- Interaction Logic ---
+
+        // 1. Toggle Crush View
+        function toggleCrushView(view) {
+            state.crushView = view;
+            const btnPrice = document.getElementById('btn-price');
+            const btnShare = document.getElementById('btn-share');
+
+            if (view === 'share') {
+                // Update UI Buttons
+                btnShare.classList.remove('bg-warm-100', 'text-warm-600');
+                btnShare.classList.add('bg-sage-500', 'text-white');
+                btnPrice.classList.remove('bg-sage-500', 'text-white');
+                btnPrice.classList.add('bg-warm-100', 'text-warm-600');
+
+                // Update Chart Data
+                chartCrush.data.datasets = [
+                    {
+                        label: 'Oil Share (%)',
+                        data: crushData.oilShare,
+                        borderColor: '#758b81', // Sage
+                        backgroundColor: 'rgba(117, 139, 129, 0.2)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y'
+                    }
+                ];
+                chartCrush.options.scales.y.title.text = 'Oil Value Share (%)';
+                chartCrush.update();
+
+            } else {
+                // Reset to Price
+                btnPrice.classList.remove('bg-warm-100', 'text-warm-600');
+                btnPrice.classList.add('bg-sage-500', 'text-white');
+                btnShare.classList.remove('bg-sage-500', 'text-white');
+                btnShare.classList.add('bg-warm-100', 'text-warm-600');
+
+                chartCrush.data.datasets = [
+                    {
+                        label: 'Crush Margin ($/bu)',
+                        data: crushData.margin,
+                        borderColor: '#44403c',
+                        backgroundColor: 'rgba(68, 64, 60, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y'
+                    }
+                ];
+                chartCrush.options.scales.y.title.text = 'Margin ($/bu)';
+                chartCrush.update();
+            }
         }
 
-        async function generateReport() {
-            const btn = document.getElementById('generateBtn');
-            const spin = document.getElementById('loadingSpinner');
-            const div = document.getElementById('aiReportContent');
-            btn.disabled = true; spin.classList.remove('hidden'); div.classList.add('hidden');
-            try {
-                const txt = await callGemini(`Spread: $1.65. Z: +0.45. Oil: 38%. Brief update.`, "Senior Analyst tone.");
-                div.innerHTML = `<p>${txt.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>`; div.classList.remove('hidden');
-            } catch(e) { alert(e.message); } finally { btn.disabled = false; spin.classList.add('hidden'); }
+        // 2. Update Insight Text (Hero Section)
+        const insights = {
+            food: {
+                title: "Focus: Food Inflation & Protein",
+                text: "<strong>Current Context:</strong> Soybean meal is the primary protein input for livestock. When crush margins squeeze, meal prices often decouple. We are watching for pass-through inflation in Q3 2026 as livestock herds rebuild."
+            },
+            fuel: {
+                title: "Focus: Energy Policy & The Crush",
+                text: "<strong>Current Context:</strong> 2026 soybean oil pricing is being held back by uncertainty around policy details. The market is waiting on final RFS rules and 45Z guidance. When policy moves, the 'Oil Share' of the crush margin reacts instantly."
+            },
+            geo: {
+                title: "Focus: Geopolitical Leverage",
+                text: "<strong>Current Context:</strong> China is actively source-switching. While they met the 12M ton pledge, the 'lumpy' nature of state buying suggests it is a holding pattern, not a structural return to US dominance."
+            }
+        };
+
+        function updateInsight(key) {
+            const container = document.getElementById('insight-display');
+            const title = document.getElementById('insight-title');
+            const text = document.getElementById('insight-text');
+
+            // Simple visual feedback animation
+            container.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                title.innerText = insights[key].title;
+                text.innerHTML = insights[key].text;
+                
+                // Color coding borders based on topic
+                container.className = `mt-8 bg-warm-200/50 rounded-lg p-6 max-w-3xl mx-auto text-left border-l-4 transition-all duration-300 ${
+                    key === 'food' ? 'border-warm-600' : 
+                    key === 'fuel' ? 'border-sage-500' : 
+                    'border-terra-500'
+                }`;
+                
+                container.style.opacity = '1';
+            }, 200);
         }
 
-        function toggleChat() { document.getElementById('chatBox').classList.toggle('hidden'); }
-
-        async function handleChatSubmit(e) {
-            e.preventDefault(); const inp = document.getElementById('chatInput'); const msg = inp.value.trim(); if(!msg) return;
-            const box = document.getElementById('chatMessages');
-            box.innerHTML += `<div class="flex justify-end mb-2"><div class="bg-blue-600 text-white p-3 rounded-lg text-sm max-w-[85%]">${msg}</div></div>`;
-            inp.value = ''; box.scrollTop = box.scrollHeight;
-            try {
-                const txt = await callGemini(msg, "Explain soybeans simply.");
-                box.innerHTML += `<div class="flex justify-start mb-2"><div class="bg-white border p-3 rounded-lg text-sm max-w-[85%]">${txt.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</div></div>`;
-            } catch(e) { box.innerHTML += `<div class="text-red-500 text-xs">Error: ${e.message}</div>`; }
-            box.scrollTop = box.scrollHeight;
+        // 3. Scroll Navigation
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
+
     </script>
 </body>
 </html>
